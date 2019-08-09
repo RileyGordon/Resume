@@ -1,0 +1,16 @@
+WINBASEAPI __out HANDLE WINAPI CreateFileDetour(__in LPCSTR lpFileName, __in DWORD dwDesiredAccess, __in DWORD dwShareMode, __in_opt LPSECURITY_ATTRIBUTES lpSecurityAttributes, __in DWORD dwCreationDisposition, __in DWORD dwFlagsAndAttributes, __in_opt HANDLE hTemplateFile)
+{
+	//printf("[R*] CreateFileAHook - %s\n", lpFileName);
+    if (!strcmp(lpFileName, "update:\\update.rpf")) {
+        Tools::MountPath("Hdd:", "\\Device\\Harddisk0\\Partition1", FALSE);
+        HANDLE updateRpfHandle = CreateFile("Hdd:\\update.rpf", dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+        if (updateRpfHandle != INVALID_HANDLE_VALUE)
+		{
+			printf("[R*] CreateFileHook - Successfully redirected update.rpf updateRpfHandle = %08X!\n", updateRpfHandle);
+			return updateRpfHandle;
+        } else {
+			printf("[R*] CreateFileAHook - Failed to open update.rpf off of HDD!\n");
+        }
+    }
+	return CreateFile(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+}
