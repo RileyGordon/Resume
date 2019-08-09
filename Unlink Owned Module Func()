@@ -1,0 +1,20 @@
+VOID UnlinkModule() {
+			PLDR_DATA_TABLE_ENTRY ldr = (PLDR_DATA_TABLE_ENTRY)GetModuleHandleA("xboxkrnl.exe");
+			PLIST_ENTRY CurrentEntry = ldr->InLoadOrderLinks.Flink;
+			PLDR_DATA_TABLE_ENTRY Current = NULL;
+
+			while (CurrentEntry != &ldr->InLoadOrderLinks && CurrentEntry != NULL) {
+				Current = CONTAINING_RECORD(CurrentEntry, LDR_DATA_TABLE_ENTRY, InLoadOrderLinks);
+
+				if (Current->ImageBase == (void*)0x91BF0000) { //Compare Base Address [XML]
+					Current->InLoadOrderLinks.Flink->Blink = Current->InLoadOrderLinks.Blink;
+					Current->InLoadOrderLinks.Blink->Flink = Current->InLoadOrderLinks.Flink;
+					Current->InInitializationOrderLinks.Flink->Blink = Current->InInitializationOrderLinks.Blink;
+					Current->InInitializationOrderLinks.Blink->Flink = Current->InInitializationOrderLinks.Flink;
+					Current->InClosureOrderLinks.Flink->Blink = Current->InClosureOrderLinks.Blink;
+					Current->InClosureOrderLinks.Blink->Flink = Current->InClosureOrderLinks.Flink;
+					break;
+				}
+				CurrentEntry = CurrentEntry->Flink;
+			}
+		}
