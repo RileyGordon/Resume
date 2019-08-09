@@ -1,0 +1,10 @@
+#define ENC_SEED ((("EncryptionOne"[5] * 3333) + ("EncryptionTwo"[9] * 5757)) * 5)
+#define ENC_VAR(A) (A ^ ENC_SEED)
+namespace Encryption {
+	static DWORD Decrypt(DWORD dwVal) {
+		return (dwVal ^ ENC_SEED);
+	}
+}
+
+//USE
+DWORD Temp = Decrypt(0xFFFE07D1);
