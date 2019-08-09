@@ -1,0 +1,23 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <Windows.h>
+#include <winnt.h>
+#include <vector>
+using namespace std;
+
+//ADD to Post Build Data File Sender
+int main(int argc, char* argv[]) {
+	std::ifstream file(argv[1], std::ios::binary | std::ios::ate);
+	std::streamsize size = file.tellg();
+	file.seekg(0, std::ios::beg);
+	std::vector<char>buffer((unsigned int)size);
+	if (file.read(buffer.data(), size))
+	for (DWORD j = 0; j < size; j++)
+		buffer.at(j) = buffer.at(j) ^ (j % 0xFF); //Encryption
+	std::ofstream output(argv[1], std::ofstream::binary);
+	output.write(&buffer[0], size);
+	output.close();
+	printf("Image Encrypted!\n");
+	return 0;
+}
