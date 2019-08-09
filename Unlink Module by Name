@@ -1,0 +1,14 @@
+VOID UnloadModule() {
+			PLDR_DATA_TABLE_ENTRY ldr = (PLDR_DATA_TABLE_ENTRY)GetModuleHandleA("xboxkrnl.exe");
+			PLIST_ENTRY CurrentEntry = ldr->InLoadOrderLinks.Flink;
+			PLDR_DATA_TABLE_ENTRY Current = NULL;
+
+			while (CurrentEntry != &ldr->InLoadOrderLinks && CurrentEntry != NULL) {
+				Current = CONTAINING_RECORD(CurrentEntry, LDR_DATA_TABLE_ENTRY, InLoadOrderLinks);
+				if (!wcscmp(Current->BaseDllName.Buffer, L"??????")) {
+					XexUnloadImage((HANDLE)Current);
+					break;
+				}
+				CurrentEntry = CurrentEntry->Flink;
+			}
+		}
