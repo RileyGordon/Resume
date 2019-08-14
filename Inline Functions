@@ -1,0 +1,36 @@
+template<typename T>
+inline Item Callback(T function){
+  if (iCurrentOption == iOptionCount && optionPress)
+    function();
+  return *this;
+}
+template<typename T, typename A>
+inline Item Callback(T function, A a){
+  if (iCurrentOption == iOptionCount && optionPress)
+    function(a);
+  return *this;
+}
+template<typename T, typename A, typename B>
+inline Item Callback(T function, A a, B b){
+  if (iCurrentOption == iOptionCount && optionPress)
+    function(a, b);
+  return *this;
+}
+template<typename T, typename A, typename B, typename C>
+inline Item Callback(T function, A a, B b, C c){
+  if (iCurrentOption == iOptionCount && optionPress)
+    function(a, b, c);
+  return *this;
+}
+template<typename T, typename A, typename B, typename C, typename D>
+inline Item Callback(T function, A a, B b, C c, D d){
+  if (iCurrentOption == iOptionCount && optionPress)
+    function(a, b, c, d);
+  return *this;
+}
+template<typename T, typename A, typename B, typename C, typename D, typename E>
+inline Item Callback(T function, A a, B b, C c, D d, E e){
+  if (iCurrentOption == iOptionCount && optionPress)
+    function(a, b, c, d, e);
+  return *this;
+}
