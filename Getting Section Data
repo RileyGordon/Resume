@@ -1,0 +1,19 @@
+BOOL GetSectionData(DWORD Offset, PCHAR SectionName, PDWORD Address, PDWORD Size)
+{
+	while (strcmp(".rdata", (PCHAR)Offset)) Offset += 4;
+	IMAGE_SECTION_HEADER *SectionHeader = (IMAGE_SECTION_HEADER*)Offset;
+
+	BOOL Result = FALSE;
+	*Address = *Size = 0;
+	for (int i = 0; strlen((PCHAR)SectionHeader[i].Name); i++)
+	{
+		if (!strcmp(SectionName, (char*)SectionHeader[i].Name))
+		{
+			*Address = _byteswap_ulong(SectionHeader[i].VirtualAddress);
+			*Size = _byteswap_ulong(SectionHeader[i].Misc.VirtualSize);
+			Result = TRUE;
+			break;
+		}
+	}
+	return Result;
+}
